@@ -54,6 +54,6 @@ while True:
         except Exception as e:
             send_to_dlq(e, report)
 
-        print(report, flush=True)
+        consumer.commit()
         
         

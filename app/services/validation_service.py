@@ -4,7 +4,9 @@ REQUIRED_INTEL = ['timestamp',
                   'reported_lat',
                   'reported_lon']
 
-REQUIRED_ATTACK = []
+REQUIRED_ATTACK = ['timestamp',
+                   'attack_id',
+                   'entity_id']
 
 REQUIRED_DAMAGE = []
 

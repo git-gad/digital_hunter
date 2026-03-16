@@ -18,6 +18,6 @@ while True:
     msg = consumer.poll(1.0)
 
     if msg and not msg.error():
-        doc = json.loads(msg.value().decode('utf-8'))
+        report = json.loads(msg.value().decode('utf-8'))
 
-        print(doc, flush=True)
+        print(report, flush=True)
