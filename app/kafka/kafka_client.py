@@ -1,7 +1,5 @@
-from confluent_kafka import Consumer, Producer
+from confluent_kafka import Producer, Consumer
 import json
-from services.intel_service import process_intel
-from services.validation_service import validate_report, REQUIRED_INTEL
 
 
 conf = {
@@ -13,18 +11,19 @@ conf = {
 
 consumer = Consumer(conf)
 
-consumer.subscribe(['intel'])
+consumer.subscribe(['intel', 'attack', 'damage'])
 
-#  producer for dlq
 producer = Producer({
     'bootstrap.servers': 'kafka:9092'
 })
+
 
 def delivery_report(err, msg):
     if err:
         print(f'delivery failed: {err}')
     else:
         print(f'delivered to: {msg.topic()}')
+        
         
 def send_to_dlq(error, report):
     payload = {
@@ -39,21 +38,4 @@ def send_to_dlq(error, report):
     )
     producer.poll(0)
     
-
-while True:
-    msg = consumer.poll(1.0)
-
-    if msg and not msg.error():
-        try:
-            report = json.loads(msg.value().decode('utf-8'))
-        
-            validate_report(report, REQUIRED_INTEL)
-
-            process_intel(report)
-            
-        except Exception as e:
-            send_to_dlq(e, report)
-
-        consumer.commit()
-        
-        
+    producer.flush(5)

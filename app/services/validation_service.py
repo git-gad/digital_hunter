@@ -8,7 +8,9 @@ REQUIRED_ATTACK = ['timestamp',
                    'attack_id',
                    'entity_id']
 
-REQUIRED_DAMAGE = []
+REQUIRED_DAMAGE = ['timestamp',
+                   'entity_id',
+                   'result']
 
 
 def validate_report(mess, required):
